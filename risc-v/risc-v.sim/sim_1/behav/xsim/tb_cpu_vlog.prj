@@ -1,0 +1,23 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../risc-v.srcs/sources_1/new" \
+"../../../../risc-v.srcs/sources_1/new/Alu.v" \
+"../../../../risc-v.srcs/sources_1/new/Branch_Compare.v" \
+"../../../../risc-v.srcs/sources_1/new/Data_Memory.v" \
+"../../../../risc-v.srcs/sources_1/new/Imm_Extend.v" \
+"../../../../risc-v.srcs/sources_1/new/Instruction_Decode.v" \
+"../../../../risc-v.srcs/sources_1/new/Instruction_Memory.v" \
+"../../../../risc-v.srcs/sources_1/new/Pc.v" \
+"../../../../risc-v.srcs/sources_1/new/Pc_Adder.v" \
+"../../../../risc-v.srcs/sources_1/new/Register_File.v" \
+"../../../../risc-v.srcs/sources_1/new/Risc32_CPU.v" \
+"../../../../risc-v.srcs/sources_1/new/mux_NEXT_PC_OR_OFFSET_PC.v" \
+"../../../../risc-v.srcs/sources_1/new/mux_RD_3_1.v" \
+"../../../../risc-v.srcs/sources_1/new/mux_RS1_OR_PC.v" \
+"../../../../risc-v.srcs/sources_1/new/mux_RS2_OR_IMM.v" \
+"../../../../risc-v.srcs/sim_1/new/tb_cpu.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
