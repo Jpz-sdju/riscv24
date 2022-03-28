@@ -1,2 +1,5 @@
-risc-v/risc-v.sim
-risc-v/risc-v.ip_user_files
+risc-v/risc-v.sim/
+risc-v/risc-v.ip_user_files/
+risc-v/risc-v.hw/
+risc-v/risc-v.cache/
+risc-v/risc-v.xpr
