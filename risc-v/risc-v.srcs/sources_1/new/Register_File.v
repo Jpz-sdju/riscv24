@@ -28,7 +28,7 @@ module Register_File(input rst,                      //dismiss
                      input [`DATA_WIDTH] write_data,  //写数�???
                      output reg [`DATA_WIDTH] data1,  //输出1
                      output reg [`DATA_WIDTH] data2); //同上2
-    reg [`width -1:0] regs[0:31];
+    reg [`DATA_WIDTH] regs[0:31];
     integer i;
     always @(*) begin
         if (rst && write_enable &&(write_addr != 5'b00000))  begin
