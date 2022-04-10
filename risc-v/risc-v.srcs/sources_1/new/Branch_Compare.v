@@ -20,8 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `include "para.vh"
-module Branch_Compare(input [`width-1:0] rs1,
-                      input [`width-1:0] rs2,
+module Branch_Compare(input [`DATA_WIDTH] rs1,
+                      input [`DATA_WIDTH] rs2,
                       input is_unsigned,
                       output reg less_than,
                       output reg equal

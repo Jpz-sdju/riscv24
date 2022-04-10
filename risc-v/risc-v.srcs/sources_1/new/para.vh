@@ -1,1 +1,1 @@
-`define width 32
+`define DATA_WIDTH 31:0

@@ -26,9 +26,9 @@ module tb_pc_pcadder_imem(
     reg clk;
     reg rst;
     
-    wire [`width-1:0] next_addr;
-    wire [`width-1:0] now_addr;
-    wire [`width-1:0] ins;
+    wire [`DATA_WIDTH] next_addr;
+    wire [`DATA_WIDTH] now_addr;
+    wire [`DATA_WIDTH] ins;
     Pc pc1(
     .clk(clk),
     .rst(rst),

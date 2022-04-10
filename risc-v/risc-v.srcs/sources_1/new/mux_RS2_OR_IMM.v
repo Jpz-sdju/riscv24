@@ -21,9 +21,9 @@
 
 `include "para.vh"
 module mux_RS2_OR_IMM(input is_imm_rs2,
-                      input [`width-1:0] extended_imm,
-                      input [`width-1:0] rs2,
-                      output reg [`width-1:0] res_rs2);
+                      input [`DATA_WIDTH] extended_imm,
+                      input [`DATA_WIDTH] rs2,
+                      output reg [`DATA_WIDTH] res_rs2);
     always @(*) begin
         if (is_imm_rs2)begin
             res_rs2 <= extended_imm;

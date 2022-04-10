@@ -21,9 +21,9 @@
 
 `include "para.vh"
 module Alu(input [3:0] control,
-           input [`width-1:0] a,
-           input [`width-1:0] b,
-           output reg [`width-1:0] res);
+           input [`DATA_WIDTH] a,
+           input [`DATA_WIDTH] b,
+           output reg [`DATA_WIDTH] res);
 always @(*) begin
     case (control)
         4'b0000: begin //add

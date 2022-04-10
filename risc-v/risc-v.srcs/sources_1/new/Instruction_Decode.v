@@ -21,7 +21,7 @@
 
 `include "para.vh"
 module Instruction_Decode(input rst,
-                          input [`width-1:0] instruction,
+                          input [`DATA_WIDTH] instruction,
                           input less_than,
                           input equal,
                           output reg pc_sel,
@@ -37,14 +37,14 @@ module Instruction_Decode(input rst,
     wire [6:0] opcode = instruction[6:0];            //opcode
     wire [2:0] funct3 = instruction[14:12];        //func3
     wire [6:0] funct7 = instruction[31:25];        //funct7
-    reg [1:0] branch;            //00->beq 01->bge 10->blt 11 ->bne
+    reg [1:0] branch_type;            //00->beq 01->bge 10->blt 11 ->bne
     assign jump=(opcode[6] && opcode[5] && ~opcode[4] && opcode[3] && opcode[2] && opcode[1] && opcode[0])|(opcode[6] && opcode[5] && ~opcode[4] && ~opcode[3] && opcode[2] && opcode[1] && opcode[0]);
     always @(*) begin
         if (jump)begin
             pc_sel <= 1;
-            end else if (branch == 2'b00 && equal) begin
+            end else if (branch_type == 2'b00 && equal) begin
             pc_sel <= 1;
-            end else if (branch == 2'b01 && ~less_than) begin    //greater_equal is equal to ~less_than,excellent!
+            end else if (branch_type == 2'b01 && ~less_than) begin    //greater_equal is equal to ~less_than,excellent!
             pc_sel <= 1;
         end
     end
@@ -157,18 +157,18 @@ module Instruction_Decode(input rst,
                     extend_op    <= 3'b000;
                     alu_control  <= 4'b0;
                 end
-                7'b1100011:begin    //branch
+                7'b1100011:begin    //branch_type
                     is_imm_rs2<=1;
                     is_pc_rs1 <=1;
                     extend_op <= 3'b011;
                     case (funct3)
                         3'b000:begin //beq
                             alu_control <= 4'b0001;
-                            branch      <= 2'b00;
+                            branch_type      <= 2'b00;
                         end
                         3'b101:begin //bge
                             alu_control <= 4'b0000;
-                            branch      <= 2'b01;
+                            branch_type      <= 2'b01;
                         end
                     endcase
                 end

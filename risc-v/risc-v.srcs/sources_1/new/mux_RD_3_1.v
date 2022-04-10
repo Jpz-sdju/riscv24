@@ -21,10 +21,10 @@
 
 `include "para.vh"
 module mux_RD_3_1(input [1:0] rd_select,
-                  input [`width-1:0] alu_res,
-                  input [`width-1:0] dmem,
-                  input [`width-1:0] next_addr,
-                  output reg [`width-1:0] res_rd);
+                  input [`DATA_WIDTH] alu_res,
+                  input [`DATA_WIDTH] dmem,
+                  input [`DATA_WIDTH] next_addr,
+                  output reg [`DATA_WIDTH] res_rd);
 always @(*) begin
     case (rd_select)
         2'b00: begin    //alu

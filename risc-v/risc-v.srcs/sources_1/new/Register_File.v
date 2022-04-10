@@ -25,9 +25,9 @@ module Register_File(input rst,                      //dismiss
                      input [4:0] read_addr2,         //同上2
                      input write_enable,             //写使�???
                      input [4:0] write_addr,         //写地�???
-                     input [`width-1:0] write_data,  //写数�???
-                     output reg [`width-1:0] data1,  //输出1
-                     output reg [`width-1:0] data2); //同上2
+                     input [`DATA_WIDTH] write_data,  //写数�???
+                     output reg [`DATA_WIDTH] data1,  //输出1
+                     output reg [`DATA_WIDTH] data2); //同上2
     reg [`width -1:0] regs[0:31];
     integer i;
     always @(*) begin

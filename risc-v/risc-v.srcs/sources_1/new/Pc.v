@@ -22,8 +22,8 @@
 `include "para.vh"
 module Pc (input clk,
            input rst,
-           input [`width-1:0] next_addr,
-           output reg [`width-1:0] now_addr,
+           input [`DATA_WIDTH] next_addr,
+           output reg [`DATA_WIDTH] now_addr,
            output reg clear);
     
     always @(posedge clk or negedge rst) begin

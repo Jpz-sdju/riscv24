@@ -22,9 +22,9 @@
 `include "para.vh"
 module mux_RS1_OR_PC(
         input is_pc_rs1,
-        input [`width-1:0] rs1,
-        input [`width-1:0] now_addr,
-        output reg [`width-1:0] res_rs1
+        input [`DATA_WIDTH] rs1,
+        input [`DATA_WIDTH] now_addr,
+        output reg [`DATA_WIDTH] res_rs1
     );
     always @(*) begin
         if(is_pc_rs1)begin

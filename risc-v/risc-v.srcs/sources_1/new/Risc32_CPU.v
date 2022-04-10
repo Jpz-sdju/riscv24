@@ -22,11 +22,11 @@
 `include "para.vh"
 module Risc32_CPU(input clk,
                   input rst);
-    wire [`width-1:0] now_addr;
-    wire [`width-1:0] next_addr;
+    wire [`DATA_WIDTH] now_addr;
+    wire [`DATA_WIDTH] next_addr;
     wire pc_sel;
-    wire [`width-1:0] alu_res;
-    wire [`width-1:0] res_addr;
+    wire [`DATA_WIDTH] alu_res;
+    wire [`DATA_WIDTH] res_addr;
     wire clear;
     Pc pc0(
     .clk(clk),
@@ -45,8 +45,8 @@ module Risc32_CPU(input clk,
     .alu_res(alu_res),
     .res_addr(res_addr)
     );
-    // wire [`width-1:0] instruction_addr;
-    wire [`width-1:0] instruction;
+    // wire [`DATA_WIDTH] instruction_addr;
+    wire [`DATA_WIDTH] instruction;
     Instruction_Memory u_Instruction_Memory(
     .rst              (rst),
     .instruction_addr (now_addr),
@@ -84,9 +84,9 @@ module Risc32_CPU(input clk,
     wire [4:0] read_addr1 = instruction[19:15];
     wire [4:0] read_addr2 = instruction[24:20];
     wire [4:0] write_addr = instruction[11:7];
-    wire [`width-1:0] rs1;
-    wire [`width-1:0] rs2;
-    wire [`width-1:0] res_rd;
+    wire [`DATA_WIDTH] rs1;
+    wire [`DATA_WIDTH] rs2;
+    wire [`DATA_WIDTH] res_rd;
     Register_File u_Register_File(
     .rst          (rst),
     .read_addr1   (read_addr1),
@@ -104,7 +104,7 @@ module Risc32_CPU(input clk,
     .less_than   (less_than),
     .equal       (equal)
     );
-    wire [`width-1:0] dmem;
+    wire [`DATA_WIDTH] dmem;
     mux_RD_3_1 u_mux_RD_3_1(
     .rd_select (rd_select),
     .alu_res   (alu_res),
@@ -112,15 +112,15 @@ module Risc32_CPU(input clk,
     .next_addr (next_addr),
     .res_rd    (res_rd)
     );
-    wire [`width-1:0] res_rs1;
+    wire [`DATA_WIDTH] res_rs1;
     mux_RS1_OR_PC u_mux_RS1_OR_PC(
     .is_pc_rs1 (is_pc_rs1),
     .rs1       (rs1),
     .now_addr  (now_addr),
     .res_rs1   (res_rs1)
     );
-    wire [`width-1:0] res_rs2;
-    wire [`width-1:0] extended_imm;
+    wire [`DATA_WIDTH] res_rs2;
+    wire [`DATA_WIDTH] extended_imm;
     mux_RS2_OR_IMM u_mux_RS2_OR_IMM(
     .is_imm_rs2   (is_imm_rs2),
     .extended_imm (extended_imm),

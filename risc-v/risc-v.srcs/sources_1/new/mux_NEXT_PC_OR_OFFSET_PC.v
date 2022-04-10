@@ -21,9 +21,9 @@
 
 `include "para.vh"
 module mux_NEXT_PC_OR_OFFSET_PC(input pc_sel,
-                                input [`width-1:0] next_addr,
-                                input [`width-1:0] alu_res,
-                                output reg [`width-1:0] res_addr);
+                                input [`DATA_WIDTH] next_addr,
+                                input [`DATA_WIDTH] alu_res,
+                                output reg [`DATA_WIDTH] res_addr);
     always @(*) begin
         if (pc_sel) begin
             res_addr <= alu_res;

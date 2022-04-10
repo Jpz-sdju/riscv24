@@ -21,11 +21,11 @@
 
 `include "para.vh"
 module Instruction_Memory(input rst,
-                          input [`width-1:0] instruction_addr,
-                          output reg [`width-1:0] instruction);
+                          input [`DATA_WIDTH] instruction_addr,
+                          output reg [`DATA_WIDTH] instruction);
     
     
-    reg [`width-1:0] instruction_mem [0:31] ;
+    reg [`DATA_WIDTH] instruction_mem [0:31] ;
     // always @(posedge clk) begin
     //     if (rst&&write_enable)
     //         instruction_mem[instruction_addr[6:2]] <= write_data ;

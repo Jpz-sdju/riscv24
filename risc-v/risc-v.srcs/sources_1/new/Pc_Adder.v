@@ -20,8 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `include "para.vh"
-module Pc_Adder (input [`width-1:0] now_addr,
-                 output reg [`width-1:0] next_addr);
+module Pc_Adder (input [`DATA_WIDTH] now_addr,
+                 output reg [`DATA_WIDTH] next_addr);
     always @(*) begin
         next_addr <= now_addr +4;
     end
