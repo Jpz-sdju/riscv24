@@ -31,7 +31,7 @@ module tb_cpu( );
     initial begin
         clk =0;
         rst=0;
-        #10
+        #11
         rst=1;
     end
     always #10 clk=~clk;

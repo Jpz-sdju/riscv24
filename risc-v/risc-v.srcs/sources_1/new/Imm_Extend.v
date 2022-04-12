@@ -19,10 +19,10 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-
-module Imm_Extend(input [31:0] instruction,
+`include "para.vh"
+module Imm_Extend(input [`DATA_WIDTH] instruction,
                   input [2:0] extend_op,
-                  output reg[31:0] imm);
+                  output reg[`DATA_WIDTH] imm);
     always @(*) begin
         case (extend_op)
             3'b000: begin // ori lw immI

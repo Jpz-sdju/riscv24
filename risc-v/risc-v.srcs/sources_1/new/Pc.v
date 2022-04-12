@@ -23,19 +23,18 @@
 module Pc (input clk,
            input rst,
            input [`DATA_WIDTH] next_addr,
-           output reg [`DATA_WIDTH] now_addr,
-           output reg clear);
+           output reg [`DATA_WIDTH] now_addr);
     
-    always @(posedge clk or negedge rst) begin
-        if (~rst)
-            clear <= 1'b0;
-        else
-            clear <= 1'b1;
-    end
+    // always @(posedge clk) begin
+    //     if (~rst)
+    //         clear <= 1'b0;
+    //     else
+    //         clear <= 1'b1;
+    // end
     
     
     always @(posedge clk) begin
-        if (~clear)
+        if (~rst)
             now_addr <= 32'b0;
         else
             now_addr <= next_addr;

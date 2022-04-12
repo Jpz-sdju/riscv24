@@ -34,6 +34,9 @@ module Instruction_Memory(input rst,
     always @(*) begin
         if (~rst) instruction <= 0;
     end
+    initial begin
+        $readmemh();
+    end
     always @(*) begin
         if (~rst) begin
             instruction_mem[0]     <= 32'h00500093;

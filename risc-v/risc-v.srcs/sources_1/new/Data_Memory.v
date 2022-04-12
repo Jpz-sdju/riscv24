@@ -1,9 +1,9 @@
 `include "para.vh"
 module Data_Memory(input rst,
-                   input [`width -1:0] data_addr,
+                   input [`DATA_WIDTH] data_addr,
                    input write_enable,
-                   input [`width -1:0] write_data,
-                   output reg [`width -1:0] out_data);
+                   input [`DATA_WIDTH] write_data,
+                   output reg [`DATA_WIDTH] out_data);
     reg [31:0] dmem[0:255];
     always @(*) begin
         if (rst && write_enable) begin

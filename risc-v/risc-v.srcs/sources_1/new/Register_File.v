@@ -21,11 +21,11 @@
 
 `include "para.vh"
 module Register_File(input rst,                      //dismiss 
-                     input [4:0] read_addr1,         //读端口地�???1
+                     input [4:0] read_addr1,         //
                      input [4:0] read_addr2,         //同上2
-                     input write_enable,             //写使�???
-                     input [4:0] write_addr,         //写地�???
-                     input [`DATA_WIDTH] write_data,  //写数�???
+                     input write_enable,             //
+                     input [4:0] write_addr,         //
+                     input [`DATA_WIDTH] write_data,  //
                      output reg [`DATA_WIDTH] data1,  //输出1
                      output reg [`DATA_WIDTH] data2); //同上2
     reg [`DATA_WIDTH] regs[0:31];

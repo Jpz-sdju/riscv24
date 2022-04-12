@@ -25,20 +25,20 @@ module Instruction_Decode(input rst,
                           input less_than,
                           input equal,
                           output reg pc_sel,
-                          output  jump,
-                          output reg is_unsigned,         //判断无符号数比较
-                          output reg is_pc_rs1,           //rs1可为pc
-                          output reg is_imm_rs2,          //判断rs2是否为imm
-                          output reg is_write_reg,        //是否为写寄存器堆
-                          output reg is_write_mem,        //是否为写data mem
+                          output jump,
+                          output is_unsigned,              //判断无符号数比较
+                          output is_pc_rs1,                //rs1可为pc
+                          output is_imm_rs2,               //判断rs2是否为imm
+                          output is_write_reg,             //是否为写寄存器堆
+                          output is_write_mem,             //是否为写data mem
                           output reg [3:0] alu_control,
-                          output reg [2:0] extend_op,     //立即数扩展method
-                          output reg [1:0] rd_select);    //选择进入regfile写端的是alu or pcadder or dmem
+                          output reg [2:0] extend_op,      //立即数扩展method
+                          output reg [1:0] rd_select);     //选择进入regfile写端的是alu or pcadder or dmem
     wire [6:0] opcode = instruction[6:0];            //opcode
     wire [2:0] funct3 = instruction[14:12];        //func3
     wire [6:0] funct7 = instruction[31:25];        //funct7
     reg [1:0] branch_type;            //00->beq 01->bge 10->blt 11 ->bne
-    assign jump=(opcode[6] && opcode[5] && ~opcode[4] && opcode[3] && opcode[2] && opcode[1] && opcode[0])|(opcode[6] && opcode[5] && ~opcode[4] && ~opcode[3] && opcode[2] && opcode[1] && opcode[0]);
+    assign jump = (opcode[6] && opcode[5] && ~opcode[4] && opcode[3] && opcode[2] && opcode[1] && opcode[0])|(opcode[6] && opcode[5] && ~opcode[4] && ~opcode[3] && opcode[2] && opcode[1] && opcode[0]);
     always @(*) begin
         if (jump)begin
             pc_sel <= 1;
@@ -49,25 +49,75 @@ module Instruction_Decode(input rst,
         end
     end
     
+    wire r_type     = (~opcode[6] && opcode[5] && opcode[4] &&~opcode[3] &&~opcode[2] && opcode[1] && opcode[0]);//0110011
+    wire i_type     = (~opcode[6] &&~opcode[5] && opcode[4] &&~opcode[3] &&~opcode[2] && opcode[1] && opcode[0]);//0010011
+    wire l_type     = (~opcode[6] &&~opcode[5] &&~opcode[4] &&~opcode[3] &&~opcode[2] && opcode[1] && opcode[0]);
+    wire s_type     = (~opcode[6] && opcode[5] &&~opcode[4] &&~opcode[3] &&~opcode[2] && opcode[1] && opcode[0]);//0100011
+    wire b_type     = (opcode[6] && opcode[5] &&~opcode[4] &&~opcode[3] &&~opcode[2] && opcode[1] && opcode[0]);//1100011
+    wire j_type     = (opcode[6] && opcode[5] &&~opcode[4] && opcode[3] && opcode[2] && opcode[1] && opcode[0]);//1101111 :not jalr!!!!!
+    wire lui_type   = (~opcode[6] && opcode[5] && opcode[4] &&~opcode[3] && opcode[2] && opcode[1] && opcode[0]);//0110111
+    wire auipc_type = (~opcode[6] &&~opcode[5] && opcode[4] &&~opcode[3] && opcode[2] && opcode[1] && opcode[0]);//0010111
+    
+    wire func3_000 = (~funct3[2]&&~funct3[1]&&~funct3[0]);
+    wire func3_001 = (~funct3[2]&&~funct3[1]&&funct3[0]);
+    wire func3_010 = (~funct3[2]&&funct3[1]&&~funct3[0]);
+    wire func3_011 = (~funct3[2]&&funct3[1]&&funct3[0]);
+    wire func3_100 = (funct3[2]&&~funct3[1]&&~funct3[0]);
+    wire func3_101 = (funct3[2]&&~funct3[1]&&funct3[0]);
+    wire func3_110 = (funct3[2]&&funct3[1]&&~funct3[0]);
+    wire func3_111 = (funct3[2]&&funct3[1]&&funct3[0]);
+    
+    wire func7_00x      = (~funct7[6]&&~funct7[5]&&~funct7[4]&&~funct7[3]&&~funct7[2]&&~funct7[1]&&~funct7[0]);
+    wire func7_01x      = (~funct7[6]&&funct7[5]&&~funct7[4]&&~funct7[3]&&~funct7[2]&&~funct7[1]&&~funct7[0]);
+    wire func7_x01      = (~funct7[6]&&~funct7[5]&&~funct7[4]&&~funct7[3]&&~funct7[2]&&~funct7[1]&&funct7[0]);
+    assign is_pc_rs1    = b_type || j_type ||auipc_type || lui_type;
+    assign is_imm_rs2   = i_type||l_type||b_type||j_type||auipc_type||lui_type;
+    assign is_write_reg = r_type||i_type ||l_type||j_type||auipc_type||lui_type;
+    assign is_write_mem = s_type;
+    
+    // assign rd_select = r_type ?2'b00:       //rd_select have an low 8 option!!!!!
+    // i_type?2'b00:
+    // l_type?2'b10:
+    // j_type?2'b01:
+    // auipc_type?2'b00:
+    // lui_type?2'b00:2'bxx;
+    
+    assign is_unsigned = (r_type && func3_011 &&func7_00x) ||(r_type &&func3_100 && func7_x01); //divu and sltu
     always @(*) begin
         if (~rst)begin
-            is_unsigned <= 0;
-            pc_sel <=0;
-            // is_write_reg <= 0;
-            // is_write_mem <= 0;
+            alu_control <= 0;
+            extend_op   <= 0;
+            rd_select   <= 0;
+            pc_sel      <= 0;
         end
         else begin
+            rd_select <= 2'b00;
+            extend_op <= 3'b111;
+            // if (r_type) begin
+            //     if (func7_00x)begin
+            //         if (func3_000)
+            //             alu_control <= 4'b0000;
+            //         else if (func3_001)
+            //             alu_control <= 4'b0100;
+            //         else if (func3_010)
+            //             alu_control <= 4'b1001;
+            //         else if (func3_011)
+            //             alu_control <= 4'b1001;
+            //         else if (func3_100)
+            //             alu_control <= 4'b1000;
+            //         else if (func3_101)
+            //             alu_control <= 4'b0101;
+            //         else if (func3_110)
+            //             alu_control <= 4'b0110;
+            //         else if (func3_111)
+            //             alu_control <= 4'b0111;
+            //         end
+            //         else if (func7_01x)
+            //             alu_control <= 4'b0001;
             
-            is_write_mem <= 0;
-            is_write_reg <= 0;
-            is_pc_rs1    <= 0;
-            is_imm_rs2   <= ~(~opcode[6] && opcode[5] && opcode[4] && ~opcode[3] && ~opcode[2] && opcode[1] && opcode[0]); //判断是否为带有立即数的指令，决定rs2为rs2还是extended imm
-            is_unsigned  <= 0;
-            rd_select    <= 2'b00;
-            extend_op    <= 3'b111;
+            //     end
             case (opcode)
                 7'b0110011:begin    //R type
-                    is_write_reg <= 1;
                     case(funct7)
                         7'b0000000:begin    //r common
                             case(funct3)
@@ -103,13 +153,8 @@ module Instruction_Decode(input rst,
                     endcase
                 end
                 7'b0010011:begin    //I type common
-                    is_write_mem <= 0;
-                    is_write_reg <= 1;
-                    is_pc_rs1    <= 0;
-                    is_imm_rs2   <= 1;
-                    is_unsigned  <= 0;
-                    rd_select    <= 2'b00;
-                    extend_op    <= 3'b000;
+                    rd_select <= 2'b00;
+                    extend_op <= 3'b000;
                     case (funct3)
                         3'b000:begin    //addi
                             alu_control <= 4'b0000;
@@ -126,9 +171,7 @@ module Instruction_Decode(input rst,
                     endcase
                 end
                 7'b0000011:begin    //I type load
-                    is_write_reg <= 1;
-                    is_imm_rs2   <= 1;
-                    extend_op    <= 3'b000;
+                    extend_op <= 3'b000;
                     case (funct3)
                         3'b000:begin    //load byte
                             alu_control <= 4'b0;
@@ -143,39 +186,31 @@ module Instruction_Decode(input rst,
                     endcase
                 end
                 7'b1101111:begin    //jal   jump signal is initalted
-                    is_write_reg <= 1;
-                    rd_select    <= 2'b01; //next addr->rd
-                    is_pc_rs1    <= 1;
-                    is_imm_rs2   <= 1;
-                    extend_op    <= 3'b100;
-                    alu_control  <= 4'b0;
+                    
+                    rd_select   <= 2'b01; //next addr->rd
+                    extend_op   <= 3'b100;
+                    alu_control <= 4'b0;
                 end
                 7'b1100111:begin    //jalr
-                    is_write_reg <= 1;
-                    rd_select    <= 2'b01;
-                    is_imm_rs2   <= 1;
-                    extend_op    <= 3'b000;
-                    alu_control  <= 4'b0;
+                    rd_select   <= 2'b01;
+                    extend_op   <= 3'b000;
+                    alu_control <= 4'b0;
                 end
                 7'b1100011:begin    //branch_type
-                    is_imm_rs2<=1;
-                    is_pc_rs1 <=1;
                     extend_op <= 3'b011;
                     case (funct3)
                         3'b000:begin //beq
                             alu_control <= 4'b0001;
-                            branch_type      <= 2'b00;
+                            branch_type <= 2'b00;
                         end
                         3'b101:begin //bge
                             alu_control <= 4'b0000;
-                            branch_type      <= 2'b01;
+                            branch_type <= 2'b01;
                         end
                     endcase
                 end
                 7'b0100011:begin    //S type  rs2作为数据 alures作为地址
-                    is_write_mem <= 1;
-                    is_imm_rs2 <=1;
-                    extend_op    <= 3'b010;
+                    extend_op <= 3'b010;
                     case (funct3)
                         3'b000: begin    //sb
                             alu_control <= 4'b0000;
@@ -186,18 +221,15 @@ module Instruction_Decode(input rst,
                     endcase
                 end
                 7'b0010111:begin    //auipc
-                    is_write_reg <= 1;
-                    extend_op    <= 3'b001;
-                    rd_select    <= 2'b00;
-                    is_pc_rs1    <= 1;
-                    is_imm_rs2   <= 1;
+                    
+                    extend_op <= 3'b001;
+                    rd_select <= 2'b00;
+                    
                 end
                 7'b0110111:begin    //lui
-                    is_write_reg <= 1;
-                    extend_op    <= 3'b001;
-                    alu_control <=4'b1100;
-                    rd_select    <= 2'b00;
-                    is_imm_rs2   <= 1;
+                    extend_op   <= 3'b001;
+                    alu_control <= 4'b1100;
+                    rd_select   <= 2'b00;
                 end
             endcase
         end

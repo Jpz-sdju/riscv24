@@ -27,13 +27,11 @@ module Risc32_CPU(input clk,
     wire pc_sel;
     wire [`DATA_WIDTH] alu_res;
     wire [`DATA_WIDTH] res_addr;
-    wire clear;
     Pc pc0(
     .clk(clk),
     .rst(rst),
     .next_addr(res_addr),   //bug2:next_addr pluged pcadder not mux!
-    .now_addr(now_addr),
-    .clear(clear)
+    .now_addr(now_addr)
     );
     Pc_Adder pc_adder(
     .now_addr(now_addr),
