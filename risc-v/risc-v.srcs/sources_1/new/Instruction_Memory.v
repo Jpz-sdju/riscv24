@@ -20,25 +20,24 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `include "para.vh"
-module Instruction_Memory(input rst,
+module Instruction_Memory(input sys_rst,
                           input [`DATA_WIDTH] instruction_addr,
                           output reg [`DATA_WIDTH] instruction);
     
     
     reg [`DATA_WIDTH] instruction_mem [0:31] ;
     // always @(posedge clk) begin
-    //     if (rst&&write_enable)
+    //     if (sys_rst&&write_enable)
     //         instruction_mem[instruction_addr[6:2]] <= write_data ;
     
     // end
-    always @(*) begin
-        if (~rst) instruction <= 0;
-    end
+
     initial begin
         $readmemh();
     end
     always @(*) begin
-        if (~rst) begin
+        if (~sys_rst) begin
+            instruction <= 0;
             instruction_mem[0]     <= 32'h00500093;
             instruction_mem[1]     <= 32'h00600113;
             instruction_mem[2]     <= 32'h002081b3;

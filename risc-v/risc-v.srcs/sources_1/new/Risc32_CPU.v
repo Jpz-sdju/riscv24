@@ -20,18 +20,18 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `include "para.vh"
-module Risc32_CPU(input clk,
-                  input rst,
+module Risc32_CPU(input sys_clk,
+                  input sys_rst,
                   output [31:0] vmem_data,
-                  input [1:0] vmem_addr);
+                  input [2:0] vmem_addr);
     wire [`DATA_WIDTH] now_addr;
     wire [`DATA_WIDTH] next_addr;
     wire pc_sel;
     wire [`DATA_WIDTH] alu_res;
     wire [`DATA_WIDTH] res_addr;
     Pc pc0(
-    .clk(clk),
-    .rst(rst),
+    .sys_clk(sys_clk),
+    .sys_rst(sys_rst),
     .next_addr(res_addr),   //bug2:next_addr pluged pcadder not mux!
     .now_addr(now_addr)
     );
@@ -48,7 +48,7 @@ module Risc32_CPU(input clk,
     // wire [`DATA_WIDTH] instruction_addr;
     wire [`DATA_WIDTH] instruction;
     Instruction_Memory u_Instruction_Memory(
-    .rst              (rst),
+    .sys_rst              (sys_rst),
     .instruction_addr (now_addr),
     .instruction      (instruction)
     );
@@ -65,7 +65,7 @@ module Risc32_CPU(input clk,
     wire [2:0] extend_op;
     wire [1:0] rd_select;
     Instruction_Decode u_Instruction_Decode(
-    .rst          (rst),
+    .sys_rst          (sys_rst),
     .instruction  (instruction),
     .less_than    (less_than),
     .equal        (equal),
@@ -94,7 +94,7 @@ module Risc32_CPU(input clk,
     wire [`DATA_WIDTH] rs2;
     wire [`DATA_WIDTH] res_rd;
     Register_File u_Register_File(
-    .rst          (rst),
+    .sys_rst          (sys_rst),
     .read_addr1   (read_addr1),
     .read_addr2   (read_addr2),
     .write_enable (is_write_reg),
@@ -147,7 +147,7 @@ module Risc32_CPU(input clk,
     );
     
     Data_Memory u_Data_Memory(
-    .rst          (rst),
+    .sys_rst          (sys_rst),
     .data_addr    (alu_res),
     .write_enable (is_write_mem),
     .write_data   (rs2),

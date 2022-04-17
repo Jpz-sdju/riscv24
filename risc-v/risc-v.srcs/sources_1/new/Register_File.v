@@ -20,28 +20,25 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `include "para.vh"
-module Register_File(input rst,                      //dismiss 
-                     input [4:0] read_addr1,         //
-                     input [4:0] read_addr2,         //同上2
-                     input write_enable,             //
-                     input [4:0] write_addr,         //
+module Register_File(input sys_rst,                   //dismiss
+                     input [4:0] read_addr1,          //
+                     input [4:0] read_addr2,          //同上2
+                     input write_enable,              //
+                     input [4:0] write_addr,          //
                      input [`DATA_WIDTH] write_data,  //
                      output reg [`DATA_WIDTH] data1,  //输出1
                      output reg [`DATA_WIDTH] data2); //同上2
     reg [`DATA_WIDTH] regs[0:31];
     integer i;
+    
     always @(*) begin
-        if (rst && write_enable &&(write_addr != 5'b00000))  begin
-            regs[write_addr] <= write_data;
+        if (~sys_rst)begin
+            
+            data1 <= 0;   //bug1:not initialized
+            data2 <= 0;
         end
-        
-    end
-    always @(*) begin
-        if (~rst)begin
-            for (i = 0 ;i<32 ;i = i+1)
-                regs[i] <= 0;
-                data1   <= 0;   //bug1:not initialized
-                data2   <= 0;
+        else if (write_enable &&(write_addr != 5'b00000))  begin
+            regs[write_addr] <= write_data;
         end
         else begin
             data1 <= regs[read_addr1];

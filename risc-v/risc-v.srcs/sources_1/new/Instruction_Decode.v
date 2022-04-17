@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `include "para.vh"
-module Instruction_Decode(input rst,
+module Instruction_Decode(input sys_rst,
                           input [`DATA_WIDTH] instruction,
                           input less_than,
                           input equal,
@@ -84,7 +84,7 @@ module Instruction_Decode(input rst,
     
     assign is_unsigned = (r_type && func3_011 &&func7_00x) ||(r_type &&func3_100 && func7_x01); //divu and sltu
     always @(*) begin
-        if (~rst)begin
+        if (~sys_rst)begin
             alu_control <= 0;
             extend_op   <= 0;
             rd_select   <= 0;
