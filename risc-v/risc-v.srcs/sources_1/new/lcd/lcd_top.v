@@ -23,6 +23,7 @@
 module lcd_top(input sys_clk,
                input sys_rst,
                output de,
+               input [31:0] vmem,
                output hsync,
                output vsync,
                output lcd_clk,
@@ -72,20 +73,10 @@ module lcd_top(input sys_clk,
 
 
 
-    reg [7:0] test_data[0:7];
     wire [2:0] vmem_addr;
-    wire [7:0]vmem_data;
-    assign vmem_data = test_data[vmem_addr];
-    initial begin
-        test_data[0]=8'd3;
-        test_data[1]=8'd4;//+1-2
-        test_data[2]=8'd4;
-        test_data[3]=8'd5;
-        test_data[4]=8'd6;
-        test_data[5]=8'd7;
-        test_data[6]=8'd8;
-        test_data[7]=8'd9;
-    end
+    wire [31:0]vmem_data;
+    assign vmem_data = vmem[vmem_addr];
+
     font_display u_font_display(
     	.lcd_clk       (clk_inner       ),
         .sys_rst       (sys_rst       ),

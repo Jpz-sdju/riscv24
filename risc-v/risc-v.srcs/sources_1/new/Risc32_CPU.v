@@ -21,7 +21,9 @@
 
 `include "para.vh"
 module Risc32_CPU(input clk,
-                  input rst);
+                  input rst,
+                  output [31:0] vmem_data,
+                  input [1:0] vmem_addr);
     wire [`DATA_WIDTH] now_addr;
     wire [`DATA_WIDTH] next_addr;
     wire pc_sel;
@@ -82,6 +84,12 @@ module Risc32_CPU(input clk,
     wire [4:0] read_addr1 = instruction[19:15];
     wire [4:0] read_addr2 = instruction[24:20];
     wire [4:0] write_addr = instruction[11:7];
+    
+    
+    
+    //vmem signals
+    
+    
     wire [`DATA_WIDTH] rs1;
     wire [`DATA_WIDTH] rs2;
     wire [`DATA_WIDTH] res_rd;
@@ -143,7 +151,9 @@ module Risc32_CPU(input clk,
     .data_addr    (alu_res),
     .write_enable (is_write_mem),
     .write_data   (rs2),
-    .out_data     (dmem)
+    .out_data     (dmem),
+    .vmem_data(vmem_data),
+    .vmem_addr(vmem_addr)
     );
     
     

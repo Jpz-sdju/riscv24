@@ -3,11 +3,14 @@ module Data_Memory(input rst,
                    input [`DATA_WIDTH] data_addr,
                    input write_enable,
                    input [`DATA_WIDTH] write_data,
-                   output reg [`DATA_WIDTH] out_data);
-    reg [31:0] dmem[0:255];
+                   output reg [`DATA_WIDTH] out_data,
+                   output reg [`DATA_WIDTH] vmem_data,
+                   input [2:0] vmem_addr
+                   );
+    reg [31:0] dmem[0:127];
     always @(*) begin
         if (rst && write_enable) begin
-            dmem[data_addr[6:0]] <= write_data;
+            dmem[data_addr[6:0]] = write_data;
         end
         
     end
@@ -24,9 +27,15 @@ module Data_Memory(input rst,
             dmem[8]  <= 32'd9;
             dmem[9]  <= 32'd10;
             dmem[10] <= 32'd0;
+            dmem[120] <=32'd1;
+            dmem[121] <=32'd2;
+            dmem[122] <=32'd3;
             out_data <= 32'b0;
             end else begin
             out_data <= dmem[data_addr[4:0]];
         end
+    end
+    always @(*) begin
+        vmem_data = dmem[{vmem_addr,4'b0}];
     end
 endmodule

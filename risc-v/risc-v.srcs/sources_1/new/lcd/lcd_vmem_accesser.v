@@ -22,7 +22,7 @@
 
 module lcd_vmem_accesser(input sys_clk,
                          input sys_rst,
-                         input [7:0] vmem_data,
+                         input [31:0] vmem_data,
                          output reg [2:0] vmem_addr,
                          output [11:0] lrom_offset,
                          input vmem_enable);
