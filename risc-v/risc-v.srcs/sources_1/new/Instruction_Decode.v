@@ -40,7 +40,10 @@ module Instruction_Decode(input sys_rst,
     reg [1:0] branch_type;            //00->beq 01->bge 10->blt 11 ->bne
     assign jump = (opcode[6] && opcode[5] && ~opcode[4] && opcode[3] && opcode[2] && opcode[1] && opcode[0])|(opcode[6] && opcode[5] && ~opcode[4] && ~opcode[3] && opcode[2] && opcode[1] && opcode[0]);
     always @(*) begin
-        if (jump)begin
+        if (~sys_rst) begin
+            pc_sel<=0;
+        end
+        else if (jump)begin
             pc_sel <= 1;
             end else if (branch_type == 2'b00 && equal) begin
             pc_sel <= 1;
@@ -88,7 +91,6 @@ module Instruction_Decode(input sys_rst,
             alu_control <= 0;
             extend_op   <= 0;
             rd_select   <= 0;
-            pc_sel      <= 0;
         end
         else begin
             rd_select <= 2'b00;
