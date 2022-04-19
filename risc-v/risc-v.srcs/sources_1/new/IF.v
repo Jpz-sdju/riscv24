@@ -26,9 +26,10 @@ module IF(
     input [`DATA_WIDTH] alu_res,
     input pc_sel,
     output [`DATA_WIDTH] now_addr,
+    output [`DATA_WIDTH] pc_plus_4,
     output [`DATA_WIDTH] instruction
     );
-    wire [`DATA_WIDTH] next_addr;
+
     wire [`DATA_WIDTH] res_addr;
     Pc u_Pc(
     	.sys_clk   (sys_clk   ),
@@ -38,11 +39,11 @@ module IF(
     );
     Pc_Adder u_Pc_Adder(
     	.now_addr  (now_addr  ),
-        .next_addr (next_addr )
+        .pc_plus_4 (pc_plus_4 )
     );
     mux_NEXT_PC_OR_OFFSET_PC u_mux_NEXT_PC_OR_OFFSET_PC(
     	.pc_sel    (pc_sel    ),
-        .next_addr (next_addr ),
+        .pc_plus_4 (pc_plus_4 ),
         .alu_res   (alu_res   ),
         .res_addr  (res_addr  )
     );

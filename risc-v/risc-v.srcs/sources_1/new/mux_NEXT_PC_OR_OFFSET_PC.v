@@ -21,14 +21,14 @@
 
 `include "para.vh"
 module mux_NEXT_PC_OR_OFFSET_PC(input pc_sel,
-                                input [`DATA_WIDTH] next_addr,
+                                input [`DATA_WIDTH] pc_plus_4,
                                 input [`DATA_WIDTH] alu_res,
                                 output reg [`DATA_WIDTH] res_addr);
     always @(*) begin
         if (pc_sel) begin
             res_addr <= alu_res;
         end else begin
-            res_addr <= next_addr;
+            res_addr <= pc_plus_4;
         end
     end
 endmodule

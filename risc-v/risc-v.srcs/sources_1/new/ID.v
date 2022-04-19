@@ -25,15 +25,17 @@ module ID(input sys_rst,
           input [`DATA_WIDTH] now_addr,
           input [`DATA_WIDTH] write_back_data,
           output pc_sel,
+          output is_write_mem,
           output [1:0] rd_select,
           output [`DATA_WIDTH] a,
           output [`DATA_WIDTH] b,
-          output [3:0] alu_control
+          output [3:0] alu_control,
+          output write_data
           );
     wire is_pc_rs1;
     wire is_imm_rs2;
     wire is_write_reg;
-    wire is_write_mem;
+
     
     
     //singals for mux
@@ -54,6 +56,9 @@ module ID(input sys_rst,
     //signals for alu and extendop
     wire [2:0] extend_op;
 
+
+    //signals for mem_WB
+    assign write_data = rdata2;
     Instruction_Decode u_Instruction_Decode(
     .sys_rst      (sys_rst),
     .instruction  (instruction),

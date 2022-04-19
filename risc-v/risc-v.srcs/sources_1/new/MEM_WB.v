@@ -26,7 +26,9 @@ module MEM_WB(input sys_rst,
               input write_enable,
               input [1:0] rd_select,
               input [`DATA_WIDTH] rs2,
-              output [`DATA_WIDTH] write_back_data
+              output [`DATA_WIDTH] write_back_data,
+              input [2:0] vmem_addr,
+              output [`DATA_WIDTH] vmem_data
               );
     wire [`DATA_WIDTH] dmem_data;
 

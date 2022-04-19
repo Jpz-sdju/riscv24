@@ -21,8 +21,8 @@
 
 `include "para.vh"
 module Pc_Adder (input [`DATA_WIDTH] now_addr,
-                 output reg [`DATA_WIDTH] next_addr);
+                 output reg [`DATA_WIDTH] pc_plus_4);
     always @(*) begin
-        next_addr <= now_addr +4;
+        pc_plus_4 <= now_addr +4;
     end
 endmodule
