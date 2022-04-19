@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 2022/03/21 21:06:53
+// Create Date: 2022/04/19 22:35:12
 // Design Name: 
-// Module Name: mux_RS1_OR_PC
+// Module Name: EXE
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,18 +20,17 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `include "para.vh"
-module mux_RS1_OR_PC(
-        input is_pc_rs1,
-        input [`DATA_WIDTH] now_addr,
-        input [`DATA_WIDTH] rs1,
-        output reg [`DATA_WIDTH] a
+module EXE(
+        input [`DATA_WIDTH] a,
+        input [`DATA_WIDTH] b,
+        input [3:0] control,
+        output [`DATA_WIDTH] res
     );
-    always @(*) begin
-        if(is_pc_rs1)begin
-            a<=now_addr;
-
-        end else begin
-            a<=rs1;
-        end
-    end
+    Alu u_Alu(
+    	.control (control ),
+        .a       (a       ),
+        .b       (b       ),
+        .res     (res     )
+    );
+    
 endmodule

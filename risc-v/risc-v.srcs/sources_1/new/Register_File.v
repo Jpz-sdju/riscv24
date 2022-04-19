@@ -26,23 +26,23 @@ module Register_File(input sys_rst,                   //dismiss
                      input write_enable,              //
                      input [4:0] write_addr,          //
                      input [`DATA_WIDTH] write_data,  //
-                     output reg [`DATA_WIDTH] data1,  //输出1
-                     output reg [`DATA_WIDTH] data2); //同上2
+                     output reg [`DATA_WIDTH] rdata1,  //输出1
+                     output reg [`DATA_WIDTH] rdata2); //同上2
     reg [`DATA_WIDTH] regs[0:31];
     integer i;
     
     always @(*) begin
         if (~sys_rst)begin
             
-            data1 <= 0;   //bug1:not initialized
-            data2 <= 0;
+            rdata1 <= 0;   //bug1:not initialized
+            rdata2 <= 0;
         end
         else if (write_enable &&(write_addr != 5'b00000))  begin
             regs[write_addr] <= write_data;
         end
         else begin
-            data1 <= regs[read_addr1];
-            data2 <= regs[read_addr2];
+            rdata1 <= regs[read_addr1];
+            rdata2 <= regs[read_addr2];
         end
     end
 endmodule

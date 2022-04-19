@@ -23,13 +23,13 @@
 module mux_RS2_OR_IMM(input is_imm_rs2,
                       input [`DATA_WIDTH] extended_imm,
                       input [`DATA_WIDTH] rs2,
-                      output reg [`DATA_WIDTH] res_rs2);
+                      output reg [`DATA_WIDTH] b);
     always @(*) begin
         if (is_imm_rs2)begin
-            res_rs2 <= extended_imm;
+            b <= extended_imm;
         end
         else begin
-            res_rs2 <= rs2;
+            b <= rs2;
         end
         
     end

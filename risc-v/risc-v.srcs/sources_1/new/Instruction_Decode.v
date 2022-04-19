@@ -25,7 +25,6 @@ module Instruction_Decode(input sys_rst,
                           input less_than,
                           input equal,
                           output reg pc_sel,
-                          output jump,
                           output is_unsigned,              //判断无符号数比较
                           output is_pc_rs1,                //rs1可为pc
                           output is_imm_rs2,               //判断rs2是否为imm

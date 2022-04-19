@@ -22,22 +22,22 @@
 `include "para.vh"
 module mux_RD_3_1(input [1:0] rd_select,
                   input [`DATA_WIDTH] alu_res,
-                  input [`DATA_WIDTH] dmem,
-                  input [`DATA_WIDTH] next_addr,
-                  output reg [`DATA_WIDTH] res_rd);
+                  input [`DATA_WIDTH] dmem_data,
+                  input [`DATA_WIDTH] pc_plus_4,
+                  output reg [`DATA_WIDTH] write_back_data);
 always @(*) begin
     case (rd_select)
         2'b00: begin    //alu
-            res_rd <= alu_res;
+            write_back_data <= alu_res;
         end
         2'b01:begin
-            res_rd <= next_addr;
+            write_back_data <= pc_plus_4;
         end
         2'b10:begin 
-            res_rd <= dmem;
+            write_back_data <= dmem_data;
         end
         2'b11:begin //low 8
-            res_rd <= {{24{dmem[7]}},dmem[7:0]};
+            write_back_data <= {{24{dmem_data[7]}},dmem_data[7:0]};
         end
     endcase
 end
