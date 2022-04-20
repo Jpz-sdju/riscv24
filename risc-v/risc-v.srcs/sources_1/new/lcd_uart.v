@@ -31,11 +31,12 @@ module lcd_uart(input sys_clk,
                 output lcd_bl,
                 input uart_rxd);
     wire [7:0] uart_data;
+    reg [7:0] interim;
     lcd_top u_lcd_top(
     .sys_clk   (sys_clk),
     .sys_rst   (sys_rst),
     .de        (de),
-    .vmem_data ({{24'b0},uart_data}),
+    .vmem_data ({{24'b0},interim}),
     .vmem_addr (vmem_addr),
     .hsync     (hsync),
     .vsync     (vsync),
@@ -44,6 +45,7 @@ module lcd_uart(input sys_clk,
     .lcd_rst   (lcd_rst),
     .lcd_bl    (lcd_bl)
     );
+    wire uart_done;
     uart_rec u_uart_rec(
     .sys_clk   (sys_clk),
     .sys_rst (sys_rst),
@@ -51,5 +53,10 @@ module lcd_uart(input sys_clk,
     .uart_done (uart_done),
     .uart_data (uart_data)
     );
-    
+    always @(posedge uart_done) begin
+        if (~sys_rst) begin
+            interim<=0;
+        end
+        interim<=uart_data;
+    end
 endmodule
