@@ -21,18 +21,18 @@
 
 
 module tb_cpu( );
-    reg clk;
-    reg rst;
+    reg sys_clk;
+    reg sys_rst;
     Risc32_CPU u_Risc32_CPU(
-    	.clk (clk ),
-        .rst (rst )
+    	.sys_clk (sys_clk ),
+        .sys_rst (sys_rst )
     );
     
     initial begin
-        clk =0;
-        rst=0;
+        sys_clk =0;
+        sys_rst=0;
         #11
-        rst=1;
+        sys_rst=1;
     end
-    always #10 clk=~clk;
+    always #10 sys_clk=~sys_clk;
 endmodule

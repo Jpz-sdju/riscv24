@@ -32,9 +32,9 @@ module Instruction_Memory(input sys_rst,
     
     // end
 
-    initial begin
-        $readmemh();
-    end
+    // initial begin
+    //     $readmemh();
+    // end
     always @(*) begin
         if (~sys_rst) begin
             instruction <= 0;

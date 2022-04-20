@@ -30,7 +30,7 @@ module ID(input sys_rst,
           output [`DATA_WIDTH] a,
           output [`DATA_WIDTH] b,
           output [3:0] alu_control,
-          output write_data
+          output [`DATA_WIDTH]write_data
           );
     wire is_pc_rs1;
     wire is_imm_rs2;
