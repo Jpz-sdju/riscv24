@@ -23,8 +23,7 @@
 module lcd_top(input sys_clk,
                input sys_rst,
                output de,
-               input [31:0] vmem_data,
-               output [2:0]vmem_addr,
+               input [63:0] vmem_data,
                output hsync,
                output vsync,
                output lcd_clk,
@@ -89,7 +88,6 @@ module lcd_top(input sys_clk,
     	.sys_clk     (clk_inner   ),
         .sys_rst     (sys_rst     ),
         .vmem_data   (vmem_data   ),
-        .vmem_addr   (vmem_addr   ),
         .lrom_offset (lrom_offset ),
         .vmem_enable(ve)
     );

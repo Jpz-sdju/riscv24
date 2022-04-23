@@ -30,20 +30,18 @@ module SOC(input sys_clk,
            output lcd_rst,
            output lcd_bl);
     wire [31:0]vmem_data;
-    wire [2:0] vmem_addr;
-    Risc32_CPU u_Risc32_CPU(
-    .sys_clk   (sys_clk),
-    .sys_rst   (sys_rst),
-    .vmem_data (vmem_data),
-    .vmem_addr (vmem_addr)
+    cpu u_cpu(
+    	.sys_clk (sys_clk ),
+        .sys_rst (sys_rst ),
+        .ebreak  (ebreak  )
     );
+    
     
     lcd_top u_lcd_top(
     .sys_clk (sys_clk),
     .sys_rst (sys_rst),
     .de      (de),
     .vmem_data    (vmem_data),
-    .vmem_addr(vmem_addr),
     .hsync   (hsync),
     .vsync   (vsync),
     .lcd_clk (lcd_clk),
