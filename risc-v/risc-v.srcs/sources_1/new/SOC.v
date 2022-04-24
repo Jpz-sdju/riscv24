@@ -29,10 +29,11 @@ module SOC(input sys_clk,
            inout [23:0] data,
            output lcd_rst,
            output lcd_bl);
-    wire [31:0]vmem_data;
+    wire [63:0]vmem_data;
     cpu u_cpu(
     	.sys_clk (sys_clk ),
         .sys_rst (sys_rst ),
+        .vmem_data(vmem_data),
         .ebreak  (ebreak  )
     );
     

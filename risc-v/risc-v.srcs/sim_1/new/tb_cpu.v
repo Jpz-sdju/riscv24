@@ -23,10 +23,24 @@
 module tb_cpu( );
     reg sys_clk;
     reg sys_rst;
-    Risc32_CPU u_Risc32_CPU(
+    // cpu u_cpu(
+    // 	.sys_clk   (sys_clk   ),
+    //     .sys_rst   (sys_rst   ),
+    //     .vmem_data (vmem_data ),
+    //     .ebreak    (ebreak    )
+    // );
+    SOC u_SOC(
     	.sys_clk (sys_clk ),
-        .sys_rst (sys_rst )
+        .sys_rst (sys_rst ),
+        .de      (de      ),
+        .hsync   (hsync   ),
+        .vsync   (vsync   ),
+        .lcd_clk (lcd_clk ),
+        .data    (data    ),
+        .lcd_rst (lcd_rst ),
+        .lcd_bl  (lcd_bl  )
     );
+    
     
     initial begin
         sys_clk =0;

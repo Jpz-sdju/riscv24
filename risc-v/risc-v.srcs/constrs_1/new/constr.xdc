@@ -36,7 +36,6 @@ set_property -dict {PACKAGE_PIN W17 IOSTANDARD LVCMOS33} [get_ports {data[21]}]
 set_property -dict {PACKAGE_PIN V18 IOSTANDARD LVCMOS33} [get_ports {data[22]}]
 set_property -dict {PACKAGE_PIN V17 IOSTANDARD LVCMOS33} [get_ports {data[23]}]
 
-set_property -dict {PACKAGE_PIN U5 IOSTANDARD LVCMOS33} [get_ports uart_rxd]
 
 
 

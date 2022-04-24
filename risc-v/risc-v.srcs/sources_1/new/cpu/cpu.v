@@ -1,6 +1,7 @@
 `include "para.v"
 module cpu (input sys_clk,
             input sys_rst,
+            output [`width]vmem_data,
             output ebreak
             );
     
@@ -77,6 +78,7 @@ module cpu (input sys_clk,
     // );
     
     mem_wb u_mem_wb(
+     .sys_clk(sys_clk),
      .sys_rst(sys_rst),
      .wb_select(wb_select),
      .pc_plus_4(pc_plus_4),
@@ -84,6 +86,7 @@ module cpu (input sys_clk,
      .rs2(rs2),
      .write_width(write_width),
      .write_enable(is_write_dmem),
-     .write_back_data(write_back_data)
+     .write_back_data(write_back_data),
+     .vmem_data(vmem_data)
     );
 endmodule

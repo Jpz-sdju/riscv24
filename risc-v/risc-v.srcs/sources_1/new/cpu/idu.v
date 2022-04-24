@@ -12,7 +12,7 @@ module idu (
     output is_write_dmem,
     output reg [1:0] wb_select,
     output reg [7:0] write_width,
-    output [`width] write_back_data,
+    input [`width] write_back_data,
 
     output [`width] dmem_write_data,
     output sub,
@@ -118,7 +118,7 @@ module idu (
     wire bltu = b_type &&(funct3 == `bltu);
     wire bgeu = b_type &&(funct3 == `bgeu);
     always @(*) begin        //pc sel logic
-        if (sys_rst) 
+        if (~sys_rst) 
             pc_sel=0;
         else if (j_type) begin
             pc_sel=1'b1;
@@ -189,7 +189,7 @@ module idu (
                 `ld:
                     write_data=write_back_data;
                 `lbu:
-                    write_data=write_back_data;
+                    write_data={58'b0,write_back_data[7:0]};
                 default: write_data =write_back_data;
             endcase        
         end else

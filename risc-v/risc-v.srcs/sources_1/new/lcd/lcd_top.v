@@ -47,6 +47,7 @@ module lcd_top(input sys_clk,
     assign data          = de?data_from_driver:{24{1'bz}};
     assign data_from_lcd = data;
     
+    // wire  [63:0] vmem_data = { {8'd2},{8'd2},{8'd2},{8'd2},{8'd2},{8'd2},{8'd2},{8'd2} };
     
     lcd_id_receive u_lcd_id_receive(
     .sys_clk     (sys_clk),
@@ -70,7 +71,6 @@ module lcd_top(input sys_clk,
     wire [11:0] lrom_offset;
 
     wire ve;
-
 
 
 
