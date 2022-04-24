@@ -3,3 +3,7 @@ risc-v/risc-v.ip_user_files/
 risc-v/risc-v.hw/
 risc-v/risc-v.cache/
 risc-v/risc-v.xpr
+risc-v/risc-v.runs/
+risc-v/risc-v.srcs/sources_1/ip/block_rom
+risc-v/risc-v.srcs/sources_1/ip/imem
+risc-v/risc-v.runs/block_rom_synth_1/rundef.js
